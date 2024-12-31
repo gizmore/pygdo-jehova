@@ -1,5 +1,6 @@
 from gdo.base.GDT import GDT
 from gdo.base.Method import Method
+from gdo.core.Connector import Connector
 
 
 class jehova(Method):
@@ -8,7 +9,7 @@ class jehova(Method):
         return 'jehova'
 
     def gdo_connectors(self) -> str:
-        return 'irc'
+        return Connector.text_connectors()
 
     def gdo_in_private(self) -> bool:
         return False
