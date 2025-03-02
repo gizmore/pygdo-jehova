@@ -14,5 +14,5 @@ class jehova(Method):
     def gdo_in_private(self) -> bool:
         return False
 
-    async def gdo_execute(self) -> GDT:
+    def gdo_execute(self) -> GDT:
         pass
