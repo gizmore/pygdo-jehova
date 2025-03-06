@@ -38,4 +38,7 @@ class Game(WithSerialization):
         return self
 
     def has_ended(self) -> bool:
-        pass
+        max_seats = len(self._players) - 1
+        if len(self._seats) >= max_seats:
+            return True
+        return False

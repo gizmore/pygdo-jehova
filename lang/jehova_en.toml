@@ -5,4 +5,8 @@ module_jehova = "Musical Chairs"
 #########
 mt_jehova_jehova = "Musical Chairs"
 md_jehova_jehova = "Start a round ofMusical Chairs."
-msg_jehova_started = "Game started."
+msg_jehova_started = "Game started with %d players."
+
+#######
+# Sit #
+#######
