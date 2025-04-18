@@ -8,7 +8,8 @@ from gdo.jehova.Game import Game
 
 class jehova(Method):
 
-    def gdo_trigger(self) -> str:
+    @classmethod
+    def gdo_trigger(cls) -> str:
         return 'jehova'
 
     def gdo_connectors(self) -> str:

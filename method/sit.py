@@ -6,7 +6,8 @@ from gdo.jehova.Game import Game
 
 class sit(Method):
 
-    def gdo_trigger(self) -> str:
+    @classmethod
+    def gdo_trigger(cls) -> str:
         return 'seat'
 
     def gdo_parameters(self) -> [GDT]:
