@@ -18,7 +18,7 @@ class jehova(Method):
     def gdo_in_private(self) -> bool:
         return False
 
-    def gdo_parameters(self) -> [GDT]:
+    def gdo_parameters(self) -> list[GDT]:
         return [
             GDT_Repeat(GDT_User('players').same_channel()).not_null().min(2),
         ]

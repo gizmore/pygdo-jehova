@@ -10,7 +10,7 @@ class sit(Method):
     def gdo_trigger(cls) -> str:
         return 'seat'
 
-    def gdo_parameters(self) -> [GDT]:
+    def gdo_parameters(self) -> list[GDT]:
         return [
             GDT_UInt('seat').not_null().min(1)
         ]
