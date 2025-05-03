@@ -19,5 +19,5 @@ class module_jehova(GDO_Module):
     def gdo_subscribe_events(self):
         Application.EVENTS.add_timer(10, self.jehova_timer, Application.EVENTS.FOREVER)
 
-    def jehova_timer(self):
+    async def jehova_timer(self):
         pass
