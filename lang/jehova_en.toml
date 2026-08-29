@@ -1,13 +1,22 @@
 module_jehova = "Musical Chairs"
 
-#########
-# Start #
-#########
 mt_jehova_jehova = "Musical Chairs"
-md_jehova_jehova = "Start a round ofMusical Chairs."
-msg_jehova_started = "Game started with %d players."
-jehova_started = "Jehova's started"
+md_jehova_jehova = "A channel game of musical chairs."
+msg_jehova_inited = "A Musical Chairs round has been opened with all opted-in channel users."
+msg_jehova_started = "The music starts with %d players. Walk around the chairs! When STOP appears, type $jh.sit <chair_number> within the displayed time."
+msg_jehova_stop = "STOP! Chair %d broke. Choose one of the remaining chairs within %s."
+msg_jehova_sat_down = "You sit on chair %d."
+msg_jehova_next_players = "Next round: %s."
+msg_jehova_next_round = "Round %d begins with %d players. The music starts again."
+msg_jehova_winner = "%s wins Musical Chairs!"
+msg_jehove_oh_noe_winner_1 = "Oh no — nobody got a chair. Even the floor won."
+msg_jehove_oh_noe_winner_2 = "A flawless collective failure. The chairs remain undefeated."
+msg_jehove_oh_noe_winner_3 = "No winner today. You all speedran spectator mode."
+msg_jehove_oh_noe_winner_4 = "Impressive: every player lost to furniture."
 
-#######
-# Sit #
-#######
+err_jehova_no_game = "There is no Musical Chairs round here. Start one with $jehova."
+err_jehova_running = "A Musical Chairs round is already running."
+err_jehova_at_least_two = "At least two players are needed to start."
+err_jehova_still_music = "The music is still playing. Wait for STOP."
+err_jehova_no_seat = "There is no seating phase right now."
+err_jehova_seat_taken = "That chair is unavailable or you have already sat down."

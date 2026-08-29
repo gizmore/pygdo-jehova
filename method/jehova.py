@@ -1,29 +1,34 @@
 from gdo.base.GDT import GDT
 from gdo.base.Method import Method
-from gdo.core.Connector import Connector
-from gdo.core.GDT_Repeat import GDT_Repeat
-from gdo.core.GDT_User import GDT_User
+from gdo.core.GDT_UserType import GDT_UserType
 from gdo.jehova.Game import Game
 
 
 class jehova(Method):
 
+    @staticmethod
+    def can_play(user) -> bool:
+        """Service bots stay visible in a channel, but do not take chairs."""
+        return user.get_user_type() != GDT_UserType.BOT and bool(user.get_setting_value('jehova'))
+
     @classmethod
     def gdo_trigger(cls) -> str:
         return 'jehova'
 
-    def gdo_connectors(self) -> str:
-        return Connector.text_connectors()
+    @classmethod
+    def gdo_trig(cls) -> str:
+        return 'jh'
 
     def gdo_in_private(self) -> bool:
         return False
 
-    def gdo_parameters(self) -> list[GDT]:
-        return [
-            GDT_Repeat(GDT_User('players').same_channel()).not_null().min(2),
-        ]
-
     def gdo_execute(self) -> GDT:
         game = Game.instance(self._env_channel)
-        game.start(self.param_value('players'))
-        return self.msg('msg_jehova_started', (len(game._players),))
+        if game._inited and game._started:
+            return self.err('err_jehova_running')
+        players = [
+            user for user in self._env_channel._users.values()
+            if self.can_play(user)
+        ]
+        game.init(players)
+        return self.msg('msg_jehova_inited')
