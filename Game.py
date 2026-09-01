@@ -47,15 +47,12 @@ class Game:
     def init(self, players: list[GDO_User]) -> 'Game':
         self.reset()
         self._inited = True
-        # A connector command may rehydrate the same persisted user as a
-        # different Python object than the object kept in channel._users.
-        # Game membership is database identity, never object identity.
-        self._players = list({player.get_id(): player for player in players}.values())
+        self._players = list(dict.fromkeys(players))
         self._initial_players = len(self._players)
         return self
 
     def join(self, player: GDO_User) -> bool:
-        if self._is_player(player):
+        if player in self._players:
             return False
         self._players.append(player)
         return True
@@ -105,16 +102,8 @@ class Game:
         return [seat for seat in range(1, len(self._players) + 1)
                 if seat != self._broken_seat and seat not in self._seats]
 
-    def _is_player(self, player: GDO_User) -> bool:
-        player_id = player.get_id()
-        return any(current.get_id() == player_id for current in self._players)
-
-    def _is_seated(self, player: GDO_User) -> bool:
-        player_id = player.get_id()
-        return any(current.get_id() == player_id for current in self._seats.values())
-
     def sit_down(self, player: GDO_User, seat: int) -> bool:
-        if not self._is_player(player) or self._is_seated(player):
+        if player not in self._players or player in self._seats.values():
             return False
         if seat not in self.available_seats():
             return False
@@ -126,9 +115,8 @@ class Game:
 
     def resolve_round(self) -> tuple[list[GDO_User], GDO_User|None]:
         seated = list(self._seats.values())
-        seated_ids = {player.get_id() for player in seated}
-        eliminated = [player for player in self._players if player.get_id() not in seated_ids]
-        self._players = [player for player in self._players if player.get_id() in seated_ids]
+        eliminated = [player for player in self._players if player not in seated]
+        self._players = [player for player in self._players if player in seated]
         self._seats = {}
         self._broken_seat = None
         if len(self._players) <= 1:

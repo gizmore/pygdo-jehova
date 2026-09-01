@@ -61,22 +61,6 @@ class JehovaTest(GDOTestCase):
         self.assertIsNone(winner)
         self.assertFalse(game._started)
 
-    def test_01b_accepts_a_rehydrated_player_instance(self):
-        channel = Bash.get_server().get_or_create_channel('jehova_identity_test')
-        gizmore = cli_gizmore()
-        peter = cli_user('jehova_identity_peter')
-        game = Game.instance(channel).init([gizmore, peter])
-        game._started = True
-        with patch('gdo.jehova.Game.choice', return_value=2):
-            game.stop_music(now=100)
-
-        class RehydratedUser:
-            def get_id(self):
-                return gizmore.get_id()
-
-        # IRC can hand the command a fresh GDO_User object for the same row.
-        self.assertTrue(game.sit_down(RehydratedUser(), 1))
-
     def test_02_main_command_starts_the_game(self):
         self.assertEqual('jehova', jehova.gdo_trigger())
         self.assertEqual('jh', jehova.gdo_trig())

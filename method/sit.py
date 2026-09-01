@@ -28,7 +28,11 @@ class sit(Method):
         if not game.is_sitting_time():
             return self.err('err_jehova_no_seat')
         seat = self.param_value('seat')
-        if not game.sit_down(self._env_user, seat):
+        # Channel membership belongs to the originating connector user. A
+        # linked account is the effective user for permissions/settings, but
+        # may not be the object registered in ``channel._users``.
+        player = self._env_reply_to or self._env_user
+        if not game.sit_down(player, seat):
             return self.err('err_jehova_seat_taken')
         if game.everyone_seated():
             # Resolve immediately for the last successful player.

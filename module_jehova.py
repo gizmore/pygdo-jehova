@@ -48,6 +48,17 @@ class module_jehova(GDO_Module):
     def gdo_subscribe_events(self):
         Application.EVENTS.add_timer_async(1, self.jehova_timer, Application.EVENTS.FOREVER)
 
+    async def start_game(self, game: Game) -> bool:
+        if len(game._players) < 2:
+            game.reset()
+            await game._channel.send(t('err_jehova_at_least_two'))
+            return False
+        game.start(music_duration=self.cfg_music_duration())
+        for player in game._players:
+            player.increase_setting('jehova_started', 1)
+        await game._channel.send(t('msg_jehova_started', (len(game._players),)))
+        return True
+
     async def jehova_timer(self):
         for game in list(Game.GAMES.values()):
             event = game.tick(Application.TIME, self.cfg_music_interval(), self.cfg_sit_duration())
