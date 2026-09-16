@@ -1,4 +1,7 @@
 module_jehova = "Musical Chairs"
+jehova_started = "Musical Chairs rounds started"
+jehova_won = "Musical Chairs rounds won"
+jehova_points = "Musical Chairs points"
 
 mt_jehova_jehova = "Musical Chairs"
 md_jehova_jehova = "A channel game of musical chairs."
