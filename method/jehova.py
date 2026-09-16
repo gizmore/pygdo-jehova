@@ -12,7 +12,7 @@ class jehova(Method):
     @staticmethod
     def can_play(user) -> bool:
         """Service bots stay visible in a channel, but do not take chairs."""
-        return user.get_user_type() != GDT_UserType.BOT and bool(user.get_setting_value('jehova'))
+        return user.get_user_type() != GDT_UserType.BOT
 
     @classmethod
     def gdo_trigger(cls) -> str:

@@ -5,7 +5,7 @@ jehova_points = "Musical Chairs points"
 
 mt_jehova_jehova = "Musical Chairs"
 md_jehova_jehova = "A channel game of musical chairs."
-msg_jehova_inited = "A Musical Chairs round opens with all opted-in channel users and starts in %d seconds."
+msg_jehova_inited = "A Musical Chairs round opens with all eligible channel users and starts in %d seconds."
 msg_jehova_started = "The music starts with %d players. Walk around the chairs! When STOP appears, type $jh.sit <chair_number> within the displayed time."
 msg_jehova_stop = "STOP! Chair %d broke. Choose one of the remaining chairs within %s."
 msg_jehova_sat_down = "You sit on chair %d."

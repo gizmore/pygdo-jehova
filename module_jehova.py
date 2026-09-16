@@ -3,7 +3,6 @@ from gdo.base.GDO_Module import GDO_Module
 from gdo.base.GDT import GDT
 from gdo.base.Trans import t
 from gdo.core.GDT_UInt import GDT_UInt
-from gdo.core.GDT_Bool import GDT_Bool
 from gdo.date.GDT_Duration import GDT_Duration
 from gdo.jehova.Game import Game
 from random import randint
@@ -36,13 +35,6 @@ class module_jehova(GDO_Module):
             GDT_UInt('jehova_started').initial('0'),
             GDT_UInt('jehova_won').initial('0'),
             GDT_UInt('jehova_points').initial('0'),
-        ]
-
-    def gdo_user_settings(self) -> list[GDT]:
-        # Players are opted in by default.  This stays a normal writable
-        # setting so `$set jehova 0` excludes a user from future rounds.
-        return [
-            GDT_Bool('jehova').not_null().initial('1'),
         ]
 
     def gdo_subscribe_events(self):

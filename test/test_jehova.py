@@ -111,13 +111,12 @@ class JehovaTest(GDOTestCase):
         self.assertEqual((('c',), True), next_lyrics(first, 'mentor.nf0', lines, 2))
         self.assertEqual((('a', 'b'), False), next_lyrics(second, 'mentor.nf0', lines, 2))
 
-    def test_06_channel_commands_start_all_opted_in_users(self):
+    def test_06_channel_commands_start_all_non_bot_users(self):
         channel = Bash.get_server().get_or_create_channel('jehova_everyone_test')
         gizmore = cli_gizmore()
         peter = cli_user('jehova_command_peter')
         service = cli_user('jehova_chanserv')
         gpt = cli_user('jehova_gpt')
-        peter.save_setting('jehova', '0')
         service.save_val('user_type', GDT_UserType.BOT)
         gpt.save_val('user_type', GDT_UserType.CHAPPY)
         channel._users = {
@@ -128,7 +127,7 @@ class JehovaTest(GDOTestCase):
         }
         game = Game.instance(channel)
         game.init([user for user in channel._users.values() if jehova.can_play(user)])
-        self.assertEqual([gizmore, gpt], game._players)
+        self.assertEqual([gizmore, peter, gpt], game._players)
 
     def test_07_points_follow_final_table_position(self):
         channel = Bash.get_server().get_or_create_channel('jehova_points_test')
