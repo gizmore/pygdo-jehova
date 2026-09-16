@@ -43,6 +43,7 @@ class Game:
         self._track = ''
         self._track_lyrics: tuple[str, ...] = ()
         self._track_finished = False
+        self._min_messages = 1
 
     def init(self, players: list[GDO_User]) -> 'Game':
         self.reset()
@@ -57,23 +58,24 @@ class Game:
         self._players.append(player)
         return True
 
-    def start(self, now: float|None = None, music_duration: float = 12.0) -> 'Game':
+    def start(self, now: float|None = None, music_duration: float = 12.0, min_messages: int = 1) -> 'Game':
         self._started = True
         self._round = 1
         # A game keeps one song until it has played through.  The next round
         # after its final lines chooses a different track when available.
         self._track, self._track_lyrics = random_lyrics()
-        self.begin_music(now, music_duration)
+        self.begin_music(now, music_duration, min_messages)
         return self
 
-    def begin_music(self, now: float|None = None, music_duration: float = 12.0):
+    def begin_music(self, now: float|None = None, music_duration: float = 12.0, min_messages: int = 1):
         now = Application.TIME if now is None else now
         self._music = True
         if self._track_finished:
             self._track, self._track_lyrics = random_lyrics(self._track)
             self._track_finished = False
+        self._min_messages = min_messages
         self._lyrics, self._track_finished = next_lyrics(
-            self._channel, self._track, self._track_lyrics, randint(3, 6))
+            self._channel, self._track, self._track_lyrics, randint(min_messages, max(6, min_messages)))
         self._lyric_index = 0
         self._seats = {}
         self._broken_seat = None
@@ -120,6 +122,7 @@ class Game:
         self._seats = {}
         self._broken_seat = None
         if len(self._players) <= 1:
+            self._inited = False
             self._started = False
             self._music = False
             return eliminated, self._players[0] if self._players else None
@@ -142,7 +145,8 @@ class Game:
         if not self._started:
             return None
         if self._music:
-            if now >= self._music_until or self._lyric_index >= len(self._lyrics):
+            if self._lyric_index >= len(self._lyrics) or (
+                now >= self._music_until and self._lyric_index >= self._min_messages):
                 return 'stop', self.stop_music(now, sit_duration)
             if now >= self._next_lyric:
                 if isinstance(music_interval, tuple):

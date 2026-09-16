@@ -36,6 +36,7 @@ class JehovaTest(GDOTestCase):
         game.init([gizmore, peter, paul])
         game.start(now=100, music_duration=1)
 
+        self.assertEqual('lyric', game.tick(100, 1, 5)[0])
         with patch('gdo.jehova.Game.choice', return_value=2):
             kind, broken = game.tick(101, 1, 5)
         self.assertEqual('stop', kind)
@@ -59,6 +60,7 @@ class JehovaTest(GDOTestCase):
         game._players = []
         _, winner = game.resolve_round()
         self.assertIsNone(winner)
+        self.assertFalse(game._inited)
         self.assertFalse(game._started)
 
     def test_02_main_command_starts_the_game(self):
@@ -99,6 +101,14 @@ class JehovaTest(GDOTestCase):
         with patch('gdo.jehova.Game.randint', return_value=8):
             self.assertEqual(('lyric', 'first'), game.tick(10, (6, 9), 5))
         self.assertEqual(18, game._next_lyric)
+
+    def test_04c_music_waits_for_the_configured_minimum_messages(self):
+        channel = Bash.get_server().get_or_create_channel('jehova_min_messages_test')
+        game = Game.instance(channel).init([cli_gizmore()])
+        with patch('gdo.jehova.Game.random_lyrics', return_value=('test', ('first', 'second'))):
+            game.start(now=100, music_duration=0, min_messages=1)
+        self.assertEqual(('lyric', 'first'), game.tick(100, 1, 5))
+        self.assertEqual('stop', game.tick(101, 1, 5)[0])
 
     def test_05_track_cursor_is_stored_per_channel_and_filename(self):
         first = Bash.get_server().get_or_create_channel('jehova_track_first')

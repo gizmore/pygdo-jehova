@@ -15,6 +15,7 @@ class module_jehova(GDO_Module):
             GDT_Duration('music_duration').not_null().min(6).initial('60s'),
             GDT_Duration('music_interval_min').not_null().min(1).initial('6s'),
             GDT_Duration('music_interval_max').not_null().min(1).initial('9s'),
+            GDT_UInt('music_messages_min').not_null().min(1).initial('1'),
             GDT_Duration('sit_duration').not_null().min(3).initial('10s'),
         ]
 
@@ -26,6 +27,9 @@ class module_jehova(GDO_Module):
             self.get_config_value('music_interval_min'),
             self.get_config_value('music_interval_max'),
         )
+
+    def cfg_music_messages_min(self) -> int:
+        return self.get_config_value('music_messages_min')
 
     def cfg_sit_duration(self) -> float:
         return self.get_config_value('sit_duration')
@@ -45,7 +49,7 @@ class module_jehova(GDO_Module):
             game.reset()
             await game._channel.send(t('err_jehova_at_least_two'))
             return False
-        game.start(music_duration=self.cfg_music_duration())
+        game.start(music_duration=self.cfg_music_duration(), min_messages=self.cfg_music_messages_min())
         for player in game._players:
             player.increase_setting('jehova_started', 1)
         await game._channel.send(t('msg_jehova_started', (len(game._players),)))
@@ -73,7 +77,7 @@ class module_jehova(GDO_Module):
                 elif game._started:
                     players = ', '.join(player.render_name() for player in game._players)
                     await game._channel.send(t('msg_jehova_next_players', (players,)))
-                    game.begin_music(Application.TIME, self.cfg_music_duration())
+                    game.begin_music(Application.TIME, self.cfg_music_duration(), self.cfg_music_messages_min())
                     await game._channel.send(t('msg_jehova_next_round', (game._round, len(game._players))))
                 else:
                     await game._channel.send(t(f'msg_jehove_oh_noe_winner_{randint(1, 4)}'))
