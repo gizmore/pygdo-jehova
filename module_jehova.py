@@ -13,8 +13,8 @@ class module_jehova(GDO_Module):
     def gdo_module_config(self) -> list[GDT]:
         return [
             GDT_Duration('music_duration').not_null().min(6).initial('60s'),
-            GDT_Duration('music_interval_min').not_null().min(1).initial('6s'),
-            GDT_Duration('music_interval_max').not_null().min(1).initial('9s'),
+            GDT_Duration('music_interval_min').not_null().min(1).initial('3s'),
+            GDT_Duration('music_interval_max').not_null().min(1).initial('6s'),
             GDT_UInt('music_messages_min').not_null().min(1).initial('1'),
             GDT_Duration('sit_duration').not_null().min(3).initial('10s'),
         ]

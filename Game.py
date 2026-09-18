@@ -75,7 +75,9 @@ class Game:
             self._track_finished = False
         self._min_messages = min_messages
         self._lyrics, self._track_finished = next_lyrics(
-            self._channel, self._track, self._track_lyrics, randint(min_messages, max(6, min_messages)))
+            # A short, unpredictable musical cue keeps the round readable in
+            # busy channels: one to four original lyric lines, then STOP.
+            self._channel, self._track, self._track_lyrics, randint(1, 4))
         self._lyric_index = 0
         self._seats = {}
         self._broken_seat = None
