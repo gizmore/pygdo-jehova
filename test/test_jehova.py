@@ -12,6 +12,7 @@ from gdo.core.GDT_UserType import GDT_UserType
 from gdo.jehova.Game import Game
 from gdo.jehova.lyrics import LYRICS, next_lyrics
 from gdo.jehova.method.jehova import jehova
+from gdo.jehova.method.shit import shit
 from gdotest.TestUtil import GDOTestCase, cli_gizmore, cli_plug, cli_user, reinstall_module
 
 
@@ -66,6 +67,9 @@ class JehovaTest(GDOTestCase):
     def test_02_main_command_starts_the_game(self):
         self.assertEqual('jehova', jehova.gdo_trigger())
         self.assertEqual('jh', jehova.gdo_trig())
+        self.assertEqual('shit', shit.gdo_trigger())
+        self.assertEqual('shit', shit.gdo_trig())
+        self.assertIsNotNone(GDO_Method.get_by_name('jehova.shit'))
 
     def test_03_plays_one_selected_lyric_track_in_order(self):
         channel = Bash.get_server().get_or_create_channel('jehova_lyrics_test')

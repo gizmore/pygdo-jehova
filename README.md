@@ -1,6 +1,9 @@
 # pygdo-jehova
 Musical Chaird / Reise nach Jerusalem pygdo chat implementation.
 
+During a round, use `$jh.sit <chair_number>` to take a chair. `$shit <chair_number>`
+is the intentionally memorable alias: **jeHova SIT**.
+
 
 Text
 Yeow, yeow
